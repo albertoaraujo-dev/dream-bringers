@@ -4,10 +4,29 @@ export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
     useAsTitle: 'email',
+    defaultColumns: ['email', 'role'],
   },
   auth: true,
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    // Email é adicionado por padrão pelo 'auth: true'
+    {
+      name: 'role', // Controle de acesso
+      type: 'select',
+      defaultValue: 'user',
+      required: true,
+      options: [
+        {
+          label: 'Admin',
+          value: 'admin',
+        },
+        {
+          label: 'Usuário',
+          value: 'user',
+        },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
   ],
 }
