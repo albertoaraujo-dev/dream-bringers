@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     categories: Category;
     lines: Line;
+    products: Product;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +82,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     lines: LinesSelect<false> | LinesSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -185,6 +187,25 @@ export interface Line {
   createdAt: string;
 }
 /**
+ * Cadastro de produtos com precificação e controle de estoque (SKU).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  image: string | Media;
+  name: string;
+  product_code: string;
+  description?: string | null;
+  price: number;
+  category?: (string | null) | Category;
+  line?: (string | null) | Line;
+  status: 'inactive' | 'active';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -206,6 +227,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'lines';
         value: string | Line;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -310,6 +335,22 @@ export interface LinesSelect<T extends boolean = true> {
   category?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  createdAt?: T;
+  updatedAt?: T;
+  image?: T;
+  name?: T;
+  product_code?: T;
+  description?: T;
+  price?: T;
+  category?: T;
+  line?: T;
+  status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
