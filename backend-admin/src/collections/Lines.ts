@@ -1,10 +1,10 @@
 import { CollectionConfig } from 'payload'
 
-export const Categories: CollectionConfig = {
-  slug: 'categories',
+export const Lines: CollectionConfig = {
+  slug: 'lines',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'id', 'updatedAt'],
+    defaultColumns: ['name', 'category', 'updatedAt'],
     group: 'Estrutura do Produto',
   },
   access: {
@@ -16,16 +16,22 @@ export const Categories: CollectionConfig = {
   fields: [
     {
       name: 'name',
-      label: 'Nome da Categoria',
+      label: 'Nome da Linha',
       type: 'text',
       required: true,
     },
     {
       name: 'description',
-      label: 'Descrição da Categoria',
+      label: 'Descrição da Linha',
       type: 'textarea',
     },
+    {
+      name: 'category',
+      label: 'Categoria',
+      type: 'relationship',
+      relationTo: 'categories', // Linha obrigatoriamente pertence a uma Categoria
+      required: true, // Simula on_delete=PROTECT
+    },
   ],
-  // Payload adiciona createdAt e updatedAt (date_created, date_edited)
   timestamps: true,
 }
