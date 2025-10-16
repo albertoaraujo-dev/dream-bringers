@@ -72,6 +72,7 @@ export interface Config {
     categories: Category;
     lines: Line;
     products: Product;
+    stores: Store;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +84,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     lines: LinesSelect<false> | LinesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    stores: StoresSelect<false> | StoresSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -125,7 +127,8 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'gerente' | 'user';
+  store?: (string | null) | Store;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -143,6 +146,22 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * Cadastro das lojas que utilizam a plataforma (tenants).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stores".
+ */
+export interface Store {
+  id: string;
+  name: string;
+  /**
+   * Usado na URL para identificar a loja (ex: "minha-loja-a").
+   */
+  identifier: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -196,6 +215,7 @@ export interface Product {
   id: string;
   createdAt: string;
   updatedAt: string;
+  store: string | Store;
   image: string | Media;
   name: string;
   product_code: string;
@@ -231,6 +251,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'products';
         value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'stores';
+        value: string | Store;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -280,6 +304,7 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  store?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -343,6 +368,7 @@ export interface LinesSelect<T extends boolean = true> {
 export interface ProductsSelect<T extends boolean = true> {
   createdAt?: T;
   updatedAt?: T;
+  store?: T;
   image?: T;
   name?: T;
   product_code?: T;
@@ -351,6 +377,16 @@ export interface ProductsSelect<T extends boolean = true> {
   category?: T;
   line?: T;
   status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stores_select".
+ */
+export interface StoresSelect<T extends boolean = true> {
+  name?: T;
+  identifier?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

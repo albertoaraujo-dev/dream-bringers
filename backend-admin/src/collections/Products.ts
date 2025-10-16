@@ -1,4 +1,4 @@
-import { CollectionConfig } from 'payload'
+import { CollectionConfig, AccessArgs } from 'payload'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -33,6 +33,29 @@ export const Products: CollectionConfig = {
       type: 'date',
       admin: {
         hidden: true, // Oculta o campo no formulário de edição, pois ele é automático
+      },
+    },
+    {
+      name: 'store',
+      label: 'Loja Proprietária',
+      type: 'relationship',
+      relationTo: 'stores',
+      required: true, // É obrigatório que um produto pertença a uma loja
+      // Configuração administrativa
+      // @ts-ignore
+      admin: {
+        position: 'sidebar', // Coloca o campo na barra lateral para destaque
+      },
+      access: {
+        // Apenas admins podem alterar a loja proprietária
+        update: ({ req }: AccessArgs) => req.user?.role === 'admin',
+      },
+      // Configuração para popular o campo automaticamente com a loja do usuário (se houver)
+      defaultValue: ({ user }) => {
+        if (user && user.store) {
+          return user.store // Define o valor padrão com o ID da loja do usuário
+        }
+        return undefined
       },
     },
     {
