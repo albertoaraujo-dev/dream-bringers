@@ -2,6 +2,10 @@ import { CollectionConfig } from 'payload'
 
 export const Lines: CollectionConfig = {
   slug: 'lines',
+  labels: {
+    singular: 'Linha',
+    plural: 'Linhas',
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'updatedAt'],
