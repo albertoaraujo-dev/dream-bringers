@@ -9,6 +9,9 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
+  upload: {
+    disableLocalStorage: true, // Cloudinary
+  },
   fields: [
     {
       name: 'alt',
@@ -16,5 +19,4 @@ export const Media: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
 }

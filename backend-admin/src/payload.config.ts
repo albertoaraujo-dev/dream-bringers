@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { en } from '@payloadcms/translations/languages/en'
 import { pt } from '@payloadcms/translations/languages/pt'
+import { cloudinaryStorage } from 'payload-cloudinary'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -46,6 +47,18 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    cloudinaryStorage({
+      config: {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+        api_key: process.env.CLOUDINARY_PUBLIC_API_KEY!,
+        api_secret: process.env.CLOUDINARY_SECRET_API_KEY!,
+      },
+      collections: {
+        media: true,
+      },
+      folder: 'produtos',
+      disableLocalStorage: true,
+    }),
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
